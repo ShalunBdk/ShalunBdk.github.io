@@ -156,7 +156,7 @@ game.newLoopFromConstructor('myGame', function () {
 		
 		brush.drawText({
 		  x : 10, y : 10,
-		  text : 'Масса: ' + user.mas.toFixed(1),
+		  text : 'Масса: ' + (user.mas).toFixed(1),
 		  size : 30,
 		  color : '#FFFFFF',
 		  strokeColor : 'black',
