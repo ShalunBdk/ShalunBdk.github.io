@@ -42,15 +42,12 @@ game.newLoopFromConstructor('myGame', function () {
 	
 	var save = function(){
 		VK.api("storage.set", {user_id: user.id, key : 'money',  value : user.money}, function(data) {
-			user.money = data.response;
 			console.log(data.response);
 		});
 		VK.api("storage.set", {user_id: user.id, key : 'mas',  value : user.mas}, function(data) {
-			user.mas = data.response;
 			console.log(data.response);
 		});
 		VK.api("storage.set", {user_id: user.id, key : 'bonustime',  value : user.money}, function(data) {
-			bonustime = data.response;
 			console.log(data.response);
 		});
 	}
