@@ -26,7 +26,6 @@ pjs.system.setTitle('Naumova Click'); // Set Title for Tab or Window
 
 var user = {
 		money: 0,
-		mas: 60,
 		id : '',
 		name : 'none',
 		avatar : '',
@@ -35,6 +34,7 @@ var user = {
 
 var mouse=1;
 var eatprice = 2;
+var mas=60.0;
 var saybool = false;
 var bonustime = 0;
 
@@ -44,7 +44,7 @@ game.newLoopFromConstructor('myGame', function () {
 		VK.api("storage.set", {user_id: user.id, key : 'money',  value : user.money}, function(data) {
 			console.log(data.response);
 		});
-		VK.api("storage.set", {user_id: user.id, key : 'mas',  value : user.mas}, function(data) {
+		VK.api("storage.set", {user_id: user.id, key : 'mas',  value : mas}, function(data) {
 			console.log(data.response);
 		});
 		VK.api("storage.set", {user_id: user.id, key : 'bonustime',  value : user.money}, function(data) {
@@ -108,7 +108,7 @@ game.newLoopFromConstructor('myGame', function () {
 		game.clear(); // clear screen
 		
 		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(naumova.getStaticBox()) && user.money >= eatprice){
-			user.mas += 0.1;
+			mas += 0.1;
 			user.money -= eatprice;
 			naumova.drawFrame(1);
 			naumova.drawFrame(2);
@@ -121,10 +121,10 @@ game.newLoopFromConstructor('myGame', function () {
 			naumova.drawFrame(naumova.frame);
 		}
 		
-		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(fotoses.getStaticBox()) && user.mas > 40){
-			user.mas -= 10;
+		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(fotoses.getStaticBox()) && mas > 40){
+			mas -= 10;
 			user.money += 100;
-		} else if(pjs.mouseControl.isPress("LEFT") && user.mas <= 40 && pjs.mouseControl.isInStatic(fotoses.getStaticBox())){
+		} else if(pjs.mouseControl.isPress("LEFT") && mas <= 40 && pjs.mouseControl.isInStatic(fotoses.getStaticBox())){
 			timer.restart(2000);
 			saytxt.setText("Я устала или голодная");
 			say();
@@ -153,7 +153,7 @@ game.newLoopFromConstructor('myGame', function () {
 		
 		brush.drawText({
 		  x : 10, y : 10,
-		  text : 'Масса: ' + (user.mas).toFixed(1),
+		  text : 'Масса: ' + mas.toFixed(1),
 		  size : 30,
 		  color : '#FFFFFF',
 		  strokeColor : 'black',
@@ -235,7 +235,7 @@ game.newLoopFromConstructor('load', function () {
 			console.log(data.response);
 		});
 		VK.api("storage.get", {user_id: user.id, key : 'mas'}, function(data) {
-			user.mas = data.response;
+			mas = data.response;
 			console.log(data.response);
 		});
 		VK.api("storage.get", {user_id: user.id, key : 'bonustime'}, function(data) {
