@@ -41,7 +41,7 @@ game.newLoopFromConstructor('myGame', function () {
 	
 	var LAST_NAME = 'noname';
 	var LAST_SCORE = 0;
-	var LASR_AVATAR = '';
+	var LAST_AVATAR = '';
 	
 	var speed = 3;
 	var speedG = 2;
