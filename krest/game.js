@@ -350,7 +350,9 @@ game.newLoopFromConstructor('myGame', function () {
 		});
 		
 		photo1.draw();
+		
 		photo2.draw();
+		
 		if(dev == true){
 			brush.drawText({
 			  x : 750, y : 130,
@@ -438,7 +440,7 @@ game.newLoopFromConstructor('myGame', function () {
 	VK.api("storage.get", {global: 1, key : 'LAST_AVATAR'}, function(data) {
 			LAST_AVATAR = data.response;
 			console.log(data.response);
-			photo2.setImage(MAX_AVATAR);
+			photo2.setImage(LAST_AVATAR);
 		});
 	
     OOP.clearArr(podarki);
