@@ -39,6 +39,10 @@ game.newLoopFromConstructor('myGame', function () {
 	var MAX_NAME = 'Админ';
 	var MAX_AVATAR = '';
 	
+	var LAST_NAME = 'noname';
+	var LAST_SCORE = 0;
+	var LASR_AVATAR = '';
+	
 	var speed = 3;
 	var speedG = 2;
 	var direction = 1;
@@ -61,6 +65,15 @@ game.newLoopFromConstructor('myGame', function () {
 		});
 		VK.api("storage.set", {global : 1, key : 'MAX_AVATAR', value : MAX_AVATAR}, function(data) {
 			console.log('AVATAR РЕКОРД ОБНОВЛЕН');
+		});
+		VK.api("storage.set", {global : 1, key : 'LAST_NAME', value : LAST_NAME}, function(data) {
+			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
+		});
+		VK.api("storage.set", {global : 1, key : 'LAST_SCORE', value : LAST_SCORE}, function(data) {
+			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
+		});
+		VK.api("storage.set", {global : 1, key : 'LAST_AVATAR', value : LAST_AVATAR}, function(data) {
+			console.log('LAST_AVATAR РЕКОРД ОБНОВЛЕН');
 		});
 	}
 	
@@ -85,6 +98,12 @@ game.newLoopFromConstructor('myGame', function () {
     file : MAX_AVATAR,
 	x : 50,
 	y : 200
+  });
+  
+  var photo2 = game.newImageObject({
+    file : LAST_AVATAR,
+	x : 50,
+	y : 400
   });
   
   var heal = game.newImageObject({
@@ -141,6 +160,9 @@ game.newLoopFromConstructor('myGame', function () {
 	
     if(health == 0){
 		GAME = 2;
+		LAST_SCORE = score;
+		LAST_AVATAR = user.avatar;
+		LAST_NAME = user.name;
 		save();
 		score = 0;
 		health = 3;
@@ -306,7 +328,29 @@ game.newLoopFromConstructor('myGame', function () {
 		  font : 'Arial'
 		});
 		
+		brush.drawText({
+		  x : 10, y : 350,
+		  text : 'Последняя игра: ',
+		  size : 30,
+		  color : '#FFFFFF',
+		  strokeColor : 'black',
+		  strokeWidth : 2,
+		  style : 'bold',
+		  font : 'Arial'
+		});
+		brush.drawText({
+		  x : 20, y : 455,
+		  text : LAST_NAME + '(' + LAST_SCORE + ')',
+		  size : 25,
+		  color : '#FFFFFF',
+		  strokeColor : 'black',
+		  strokeWidth : 2,
+		  style : 'bold',
+		  font : 'Arial'
+		});
+		
 		photo1.draw();
+		photo2.draw();
 		if(dev == true){
 			brush.drawText({
 			  x : 750, y : 130,
@@ -382,6 +426,19 @@ game.newLoopFromConstructor('myGame', function () {
 			MAX_AVATAR = data.response;
 			console.log(data.response);
 			photo1.setImage(MAX_AVATAR);
+		});
+	VK.api("storage.get", {global: 1, key : 'LAST_NAME'}, function(data) {
+			LAST_NAME = data.response;
+			console.log(data.response);
+		});
+	VK.api("storage.get", {global: 1, key : 'LAST_SCORE'}, function(data) {
+			LAST_SCORE = data.response;
+			console.log(data.response);
+		});
+	VK.api("storage.get", {global: 1, key : 'LAST_AVATAR'}, function(data) {
+			LAST_AVATAR = data.response;
+			console.log(data.response);
+			photo2.setImage(MAX_AVATAR);
 		});
 	
     OOP.clearArr(podarki);
