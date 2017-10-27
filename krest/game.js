@@ -562,7 +562,7 @@ game.newLoopFromConstructor('myGame', function () {
 			boots = data.response;
 			console.log(data.response);
 		});
-	/*VK.api("storage.get", {global: 1, key : 'NAME_COIN'}, function(data) {
+	VK.api("storage.get", {global: 1, key : 'NAME_COIN'}, function(data) {
 			NAME_COIN = data.response;
 			console.log(data.response);
 		});
@@ -574,7 +574,7 @@ game.newLoopFromConstructor('myGame', function () {
 			PHOTO_COIN = data.response;
 			console.log(data.response);
 			photo3.setImage(PHOTO_COIN);
-		});*/
+		});
   }
     OOP.clearArr(podarki);
     score = 0;
