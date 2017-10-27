@@ -573,7 +573,7 @@ game.newLoopFromConstructor('myGame', function () {
 	VK.api("storage.get", {global: 1, key : 'PHOTO_COIN'}, function(data) {
 			PHOTO_COIN = data.response;
 			console.log(data.response);
-			photo2.setImage(PHOTO_COIN);
+			photo3.setImage(PHOTO_COIN);
 		});
   }
     OOP.clearArr(podarki);
