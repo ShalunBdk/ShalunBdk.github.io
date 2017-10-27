@@ -522,7 +522,7 @@ game.newLoopFromConstructor('myGame', function () {
 			user.id = '' + data.response[0].id;
 			user.avatar = '' + data.response[0].photo_50;
 			console.log(user);
-			
+			user.loaded = true;
 		});
 	VK.api("storage.get", {global: 1, key : 'MAX_NAME'}, function(data) {
 			MAX_NAME = '' + data.response;
@@ -575,11 +575,10 @@ game.newLoopFromConstructor('myGame', function () {
 			console.log(data.response);
 			photo2.setImage(PHOTO_COIN);
 		});
-	user.loaded = true;
   }
     OOP.clearArr(podarki);
     score = 0;
-	if((pjs.resources.isLoaded() == true) && user.loaded = true)GAME = 0;
+	if((pjs.resources.isLoaded() == true) && (user.loaded = true))GAME = 0;
   };
 	this.exit = function () {
 		save();
