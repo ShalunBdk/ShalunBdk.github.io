@@ -20,19 +20,29 @@ var height = 600; // height of scene viewport
 var r = game.getResolution();
 var lm = pjs.memory.local;
 
+function truncated(num) {
+if(num == 3.24)num=3.25;
+ return Math.trunc(num * 100) / 100;
+}
+
 pjs.system.setTitle('Happy New Year Game'); // Set Title for Tab or Window
 
-game.newLoopFromConstructor('myGame', function () {
-	
-	var user = {
+var user = {
 		score: 0,
 		id : '',
 		name : 'none',
 		avatar : '',
+		coin: 0,
 		loaded : true
 	};
 	
+	var naum_fall = 0;
 	
+	var speed = 3;
+	
+	var boots = false;
+
+game.newLoopFromConstructor('myGame', function () {
 	
 	var GAME = 0;
 	var MAX_SCORE = 0;
@@ -43,7 +53,10 @@ game.newLoopFromConstructor('myGame', function () {
 	var LAST_SCORE = 0;
 	var LAST_AVATAR = '';
 	
-	var speed = 3;
+	var BIGGEST_COIN = 0;
+	var NAME_COIN = 'noname';
+	var PHOTO_COIN = '';
+	
 	var speedG = 2;
 	var direction = 1;
 	
@@ -74,6 +87,21 @@ game.newLoopFromConstructor('myGame', function () {
 		});
 		VK.api("storage.set", {global : 1, key : 'LAST_AVATAR', value : LAST_AVATAR}, function(data) {
 			console.log('LAST_AVATAR РЕКОРД ОБНОВЛЕН');
+		});
+		VK.api("storage.set", {user_id: user.id, key : 'coin', value : user.coin}, function(data) {
+			console.log('coin ОБНОВЛЕН');
+		});
+		VK.api("storage.set", {user_id: user.id, key : 'boots', value : boots}, function(data) {
+			console.log('boots ОБНОВЛЕН');
+		});
+		VK.api("storage.set", {global : 1, key : 'BIGGEST_COIN', value : LAST_SCORE}, function(data) {
+			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
+		});
+		VK.api("storage.set", {global : 1, key : 'NAME_COIN', value : LAST_SCORE}, function(data) {
+			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
+		});
+		VK.api("storage.set", {global : 1, key : 'PHOTO_COIN', value : LAST_SCORE}, function(data) {
+			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
 		});
 	}
 	
@@ -116,6 +144,7 @@ game.newLoopFromConstructor('myGame', function () {
   
   // Объявим массив с подарками
   var podarki = [];
+  var coins = [];
 
   // Создадим таймер, который будет добавлять подарки
   var timer = OOP.newTimer(1000, function () {
@@ -125,6 +154,11 @@ game.newLoopFromConstructor('myGame', function () {
       w : 120, h : 120,
       file : 'pic/naumova1.png'
     }));
+	naum_fall++;
+  });
+  var timerSave = OOP.newTimer(120000, function () {
+    save();
+	console.log('saving');
   });
   
   this.update = function () {
@@ -192,6 +226,7 @@ game.newLoopFromConstructor('myGame', function () {
 	}
 	
     timer.restart();
+	timerSave.restart();
 
     OOP.forArr(podarki, function (el, i) { // i - идентификатор
       el.draw(); // Рисуем подарок
@@ -211,7 +246,47 @@ game.newLoopFromConstructor('myGame', function () {
 
     });
 	
+	if(naum_fall == 10){
+		naum_fall = 0;
+		coins.push(game.newImageObject({
+		  x : math.random(0, width - 200), // 50*r - ширина объекта
+		  y : -math.random(200, 600), // уберем минус, так как он уже есть
+		  file : 'pic/NC.png'
+		}));
+	}
+	
+	OOP.forArr(coins, function (cl, i) { // i - идентификатор
+      cl.draw(); // Рисуем подарок
+      cl.move(point(0, speedG*dt)); // Двигаем вниз
+		
+		if(cl.y > height){
+			coins.splice(i, 1);
+		}
+      // Проверка на столкновение подарка с сантой
 
+      if (cl.isIntersect(santa)) {
+        coins.splice(i, 1); // i - идентификатор, 1 - количество
+        user.coin+=math.random(1, 5); // Увеличиваем счет
+		if(user.coin > BIGGEST_COIN){
+			BIGGEST_COIN = user.coin;
+			PHOTO_COIN = user.avatar;
+			NAME_COIN = user.name;
+		}
+      }
+
+    });
+	
+	brush.drawText({
+		x : 60, y : 570,
+		text : user.coin,
+		size : 25,
+		color : '#aaf0f8',
+		strokeColor : 'black',
+		strokeWidth : 2,
+		style : 'bold',
+		font : 'Arial'
+	});
+	
     if (key.isDown('LEFT')) {
       // Двигаем влево
       if (santa.x >= 0)
@@ -284,7 +359,15 @@ game.newLoopFromConstructor('myGame', function () {
 			x : 285,
 			y : 180
 		});
+		var shop_buttom = game.newImageObject({
+			file : 'pic/shop_button.png',
+			h : 114,
+			w : 305,
+			x : 285,
+			y : 380
+		});
 		game_buttom.draw();
+		shop_buttom.draw();
 		brush.drawText({
 		  x : 150, y : 30,
 		  text : '' + score,
@@ -368,8 +451,8 @@ game.newLoopFromConstructor('myGame', function () {
 		if (mouse.isPeekObject('LEFT', game_buttom)) {
 			GAME = 1;
 		}
-		if (key.isDown('ENTER')) {
-			GAME = 1;
+		if (mouse.isPeekObject('LEFT', shop_buttom)) {
+			game.startLoop('shop');
 		}
 		if (key.isDown('D')) {
 			dev = true;
@@ -410,7 +493,7 @@ game.newLoopFromConstructor('myGame', function () {
 			user.id = '' + data.response[0].id;
 			user.avatar = '' + data.response[0].photo_50;
 			console.log(user);
-			user.loaded = true;
+			
 		});
 	VK.api("storage.get", {global: 1, key : 'MAX_NAME'}, function(data) {
 			MAX_NAME = '' + data.response;
@@ -442,13 +525,84 @@ game.newLoopFromConstructor('myGame', function () {
 			console.log(data.response);
 			photo2.setImage(LAST_AVATAR);
 		});
-	
+	VK.api("storage.get", {user_id: user.id, key : 'coin'}, function(data) {
+			user.coin = data.response;
+			console.log(data.response);
+		});
+	VK.api("storage.get", {user_id: user.id, key : 'boots'}, function(data) {
+			boots = data.response;
+			console.log(data.response);
+		});
+	user.loaded = true;
     OOP.clearArr(podarki);
     score = 0;
 	if(pjs.resources.isLoaded() == true)GAME = 0;
   };
 	this.exit = function () {
 		save();
+	}
+});
+
+game.newLoopFromConstructor('shop', function () {
+	
+	back = game.newImageObject({
+		file : 'pic/bg_shop_noboot.png',
+		h : 600,
+		w : 900
+		});
+	
+	buy_boot = game.newImageObject({
+		file : 'pic/buy_boot.png',
+		x: 60, y: 155,
+		scale: 0.7
+		});
+	buy_fitness = game.newImageObject({
+		file : 'pic/buy_boot.png',
+		x: 240, y: 155,
+		scale: 0.7
+		});
+	
+	this.update = function () {
+		
+		if(boots == true)back.setImage( "pic/bg_shop_boot.png" );
+		back.draw(); // Отрисуем фон
+		buy_boot.draw();
+		buy_fitness.draw();
+		
+		brush.drawText({
+		  x : 60, y : 570,
+		  text : user.coin,
+		  size : 25,
+		  color : '#aaf0f8',
+		  strokeColor : 'black',
+		  strokeWidth : 2,
+		  style : 'bold',
+		  font : 'Arial'
+		});
+		
+		brush.drawText({
+		  x : 80, y : 2,
+		  text : truncated(speed),
+		  size : 17,
+		  color : '#07184f',
+		  strokeColor : 'black',
+		  strokeWidth : 1,
+		  style : 'bold',
+		  font : 'Arial'
+		});
+		
+		if (mouse.isPeekObject('LEFT', buy_boot)) {
+			if(!boots && user.coin > 199){ boots = true;user.coin -= 200;speed += 0.1; }
+		}
+		
+		if (mouse.isPeekObject('LEFT', buy_fitness)) {
+			if(boots && user.coin > 99){ user.coin -= 100;speed += 0.05; }
+		}
+		
+		if (key.isDown('ESC')) {
+			game.startLoop('myGame');
+		}
+		
 	}
 });
 
