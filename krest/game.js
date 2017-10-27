@@ -32,7 +32,7 @@ var user = {
 		name : 'none',
 		avatar : '',
 		coin: 0,
-		loaded : true
+		loaded : false
 	};
 	
 	var naum_fall = 0;
@@ -579,7 +579,7 @@ game.newLoopFromConstructor('myGame', function () {
   }
     OOP.clearArr(podarki);
     score = 0;
-	if((pjs.resources.isLoaded() == true) && user.loaded)GAME = 0;
+	if((pjs.resources.isLoaded() == true) && user.loaded = true)GAME = 0;
   };
 	this.exit = function () {
 		save();
