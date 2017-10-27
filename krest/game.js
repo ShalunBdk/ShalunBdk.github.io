@@ -32,7 +32,7 @@ var user = {
 		name : 'none',
 		avatar : '',
 		coin: 0,
-		loaded : false
+		loaded : true
 	};
 	
 	var naum_fall = 0;
@@ -516,7 +516,7 @@ game.newLoopFromConstructor('myGame', function () {
   };
 
   this.entry = function () { // [optional]
-  if(user.loaded == false){
+  /*if(user.loaded == false){
 	VK.api("users.get", {'fields':'photo_50'}, function(data) {
 			user.name = '' + data.response[0].first_name;
 			user.id = '' + data.response[0].id;
@@ -576,10 +576,10 @@ game.newLoopFromConstructor('myGame', function () {
 			photo2.setImage(PHOTO_COIN);
 		});
 	user.loaded = true;
-  }
+  }*/
     OOP.clearArr(podarki);
     score = 0;
-	if(pjs.resources.isLoaded() == true)GAME = 0;
+	if((pjs.resources.isLoaded() == true) && user.loaded)GAME = 0;
   };
 	this.exit = function () {
 		save();
