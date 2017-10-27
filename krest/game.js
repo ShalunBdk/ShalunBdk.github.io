@@ -21,7 +21,6 @@ var r = game.getResolution();
 var lm = pjs.memory.local;
 
 function truncated(num) {
-if(num == 3.24)num=3.25;
  return Math.trunc(num * 100) / 100;
 }
 
@@ -33,7 +32,7 @@ var user = {
 		name : 'none',
 		avatar : '',
 		coin: 0,
-		loaded : true
+		loaded : false
 	};
 	
 	var naum_fall = 0;
@@ -94,13 +93,13 @@ game.newLoopFromConstructor('myGame', function () {
 		VK.api("storage.set", {user_id: user.id, key : 'boots', value : boots}, function(data) {
 			console.log('boots ОБНОВЛЕН');
 		});
-		VK.api("storage.set", {global : 1, key : 'BIGGEST_COIN', value : LAST_SCORE}, function(data) {
+		VK.api("storage.set", {global : 1, key : 'BIGGEST_COIN', value : BIGGEST_COIN}, function(data) {
 			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
 		});
-		VK.api("storage.set", {global : 1, key : 'NAME_COIN', value : LAST_SCORE}, function(data) {
+		VK.api("storage.set", {global : 1, key : 'NAME_COIN', value : NAME_COIN}, function(data) {
 			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
 		});
-		VK.api("storage.set", {global : 1, key : 'PHOTO_COIN', value : LAST_SCORE}, function(data) {
+		VK.api("storage.set", {global : 1, key : 'PHOTO_COIN', value : PHOTO_COIN}, function(data) {
 			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
 		});
 	}
@@ -132,6 +131,12 @@ game.newLoopFromConstructor('myGame', function () {
     file : LAST_AVATAR,
 	x : 50,
 	y : 400
+  });
+  
+  var photo3 = game.newImageObject({
+    file : PHOTO_COIN,
+	x : 670,
+	y : 200
   });
   
   var heal = game.newImageObject({
@@ -432,9 +437,32 @@ game.newLoopFromConstructor('myGame', function () {
 		  font : 'Arial'
 		});
 		
+		brush.drawText({
+		  x : 630, y : 150,
+		  text : 'ТОП Богач: ',
+		  size : 30,
+		  color : '#FFFFFF',
+		  strokeColor : 'black',
+		  strokeWidth : 2,
+		  style : 'bold',
+		  font : 'Arial'
+		});
+		brush.drawText({
+		  x : 630, y : 255,
+		  text : NAME_COIN + '(' + BIGGEST_COIN + ')',
+		  size : 25,
+		  color : '#FFFFFF',
+		  strokeColor : 'black',
+		  strokeWidth : 2,
+		  style : 'bold',
+		  font : 'Arial'
+		});
+		
 		photo1.draw();
 		
 		photo2.draw();
+		
+		photo3.draw();
 		
 		if(dev == true){
 			brush.drawText({
@@ -488,6 +516,7 @@ game.newLoopFromConstructor('myGame', function () {
   };
 
   this.entry = function () { // [optional]
+  if(user.loaded == false){
 	VK.api("users.get", {'fields':'photo_50'}, function(data) {
 			user.name = '' + data.response[0].first_name;
 			user.id = '' + data.response[0].id;
@@ -533,7 +562,21 @@ game.newLoopFromConstructor('myGame', function () {
 			boots = data.response;
 			console.log(data.response);
 		});
+	VK.api("storage.get", {global: 1, key : 'NAME_COIN'}, function(data) {
+			NAME_COIN = data.response;
+			console.log(data.response);
+		});
+	VK.api("storage.get", {global: 1, key : 'BIGGEST_COIN'}, function(data) {
+			BIGGEST_COIN = data.response;
+			console.log(data.response);
+		});
+	VK.api("storage.get", {global: 1, key : 'PHOTO_COIN'}, function(data) {
+			PHOTO_COIN = data.response;
+			console.log(data.response);
+			photo2.setImage(PHOTO_COIN);
+		});
 	user.loaded = true;
+  }
     OOP.clearArr(podarki);
     score = 0;
 	if(pjs.resources.isLoaded() == true)GAME = 0;
