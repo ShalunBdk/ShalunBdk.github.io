@@ -32,7 +32,7 @@ var user = {
 		name : 'none',
 		avatar : '',
 		coin: 0,
-		loaded : false
+		loaded : true
 	};
 	
 	var naum_fall = 0;
@@ -66,13 +66,13 @@ game.newLoopFromConstructor('myGame', function () {
 	var health = 3;
 	
 	var save = function(){
-		VK.api("storage.set", {global : 1, key : 'MAX_SCOR', value : MAX_SCORE}, function(data) {
+		VK.api("storage.set", {global : 1, key : 'MAX_SCOR', value : parseInt(MAX_SCORE)}, function(data) {
 			console.log('РЕКОРД ОБНОВЛЕН');
 		});
 		VK.api("storage.set", {global: 1, key : 'MAX_NAME', value : MAX_NAME}, function(data) {
 			console.log('NAME РЕКОРД ОБНОВЛЕН');
 		});
-		VK.api("storage.set", {user_id: user.id, key : 'scor', value : user.score}, function(data) {
+		VK.api("storage.set", {user_id: user.id, key : 'scor', value : parseInt(user.score)}, function(data) {
 			console.log('NAME РЕКОРД ОБНОВЛЕН');
 		});
 		VK.api("storage.set", {global : 1, key : 'MAX_AVATAR', value : MAX_AVATAR}, function(data) {
@@ -81,19 +81,19 @@ game.newLoopFromConstructor('myGame', function () {
 		VK.api("storage.set", {global : 1, key : 'LAST_NAME', value : LAST_NAME}, function(data) {
 			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
 		});
-		VK.api("storage.set", {global : 1, key : 'LAST_SCORE', value : LAST_SCORE}, function(data) {
+		VK.api("storage.set", {global : 1, key : 'LAST_SCORE', value : parseInt(LAST_SCORE)}, function(data) {
 			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
 		});
 		VK.api("storage.set", {global : 1, key : 'LAST_AVATAR', value : LAST_AVATAR}, function(data) {
 			console.log('LAST_AVATAR РЕКОРД ОБНОВЛЕН');
 		});
-		VK.api("storage.set", {user_id: user.id, key : 'coin', value : user.coin}, function(data) {
+		VK.api("storage.set", {user_id: user.id, key : 'coin', value : parseInt(user.coin)}, function(data) {
 			console.log('coin ОБНОВЛЕН');
 		});
 		VK.api("storage.set", {user_id: user.id, key : 'boots', value : boots}, function(data) {
 			console.log('boots ОБНОВЛЕН');
 		});
-		VK.api("storage.set", {global : 1, key : 'BIGGEST_COIN', value : BIGGEST_COIN}, function(data) {
+		VK.api("storage.set", {global : 1, key : 'BIGGEST_COIN', value : parseInt(BIGGEST_COIN)}, function(data) {
 			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
 		});
 		VK.api("storage.set", {global : 1, key : 'NAME_COIN', value : NAME_COIN}, function(data) {
