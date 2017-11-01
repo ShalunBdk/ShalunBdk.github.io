@@ -29,11 +29,11 @@ function truncated(num) {
 pjs.system.setTitle('Naumova Click'); // Set Title for Tab or Window
 
 var user = {
-	name = '',
-	id = '',
-	avatar = '',
-	mas = 60,
-	coin = 0
+	name : '',
+	id : '',
+	avatar : '',
+	mas : 60,
+	coin : 0
 }
 
 var mas=60;
