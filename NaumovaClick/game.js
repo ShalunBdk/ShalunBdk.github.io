@@ -22,35 +22,20 @@ var mouse = pjs.mouseControl.initMouseControl();
 var width  = 900; // width of scene viewport
 var height = 600; // height of scene viewport
 
+function truncated(num) {
+ return Math.trunc(num * 100) / 100;
+}
+
 pjs.system.setTitle('Naumova Click'); // Set Title for Tab or Window
 
-var user = {
-		money: 0,
-		id : '',
-		name : 'none',
-		avatar : '',
-		loaded : true
-	};
-
+var mas=60;
+var money=0;
 var mouse=1;
 var eatprice = 2;
-var mas=60.0;
 var saybool = false;
 var bonustime = 0;
 
 game.newLoopFromConstructor('myGame', function () {
-	
-	var save = function(){
-		VK.api("storage.set", {user_id: user.id, key : 'money',  value : user.money}, function(data) {
-			console.log(data.response);
-		});
-		VK.api("storage.set", {user_id: user.id, key : 'mas',  value : mas}, function(data) {
-			console.log(data.response);
-		});
-		VK.api("storage.set", {user_id: user.id, key : 'bonustime',  value : user.money}, function(data) {
-			console.log(data.response);
-		});
-	}
 	
 	var naumova = game.newAnimationObject({
 	  animation : pjs.tiles.newAnimation('pic/naumova_click.png', 256, 256, 3),
@@ -77,6 +62,7 @@ game.newLoopFromConstructor('myGame', function () {
 	
 	var bonustimer = pjs.OOP.newTimer(1000, function () { 
 		if(bonustime != 0)bonustime -= 1000;
+		log(bonustime);
 		bonustimer.start();
 	});
 	
@@ -107,12 +93,12 @@ game.newLoopFromConstructor('myGame', function () {
 		
 		game.clear(); // clear screen
 		
-		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(naumova.getStaticBox()) && user.money >= eatprice){
+		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(naumova.getStaticBox()) && money >= eatprice){
 			mas += 0.1;
-			user.money -= eatprice;
+			money -= eatprice;
 			naumova.drawFrame(1);
 			naumova.drawFrame(2);
-		} else if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(naumova.getStaticBox()) && user.money < eatprice){
+		} else if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(naumova.getStaticBox()) && money < eatprice){
 			naumova.drawFrame(naumova.frame);
 			timer.restart(2000);
 			saytxt.setText("Мне нужно целых" + eatprice + " рублей");
@@ -123,7 +109,7 @@ game.newLoopFromConstructor('myGame', function () {
 		
 		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(fotoses.getStaticBox()) && mas > 40){
 			mas -= 10;
-			user.money += 100;
+			money += 100;
 		} else if(pjs.mouseControl.isPress("LEFT") && mas <= 40 && pjs.mouseControl.isInStatic(fotoses.getStaticBox())){
 			timer.restart(2000);
 			saytxt.setText("Я устала или голодная");
@@ -131,7 +117,7 @@ game.newLoopFromConstructor('myGame', function () {
 		}
 		
 		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(coin.getStaticBox()) && bonustime == 0){
-			user.money += 500;
+			money += 500;
 			bonustime = 120000;
 			log("start");
 			bonustimer.start();
@@ -153,7 +139,7 @@ game.newLoopFromConstructor('myGame', function () {
 		
 		brush.drawText({
 		  x : 10, y : 10,
-		  text : 'Масса: ' + mas.toFixed(1),
+		  text : 'Масса: ' + truncated(mas),
 		  size : 30,
 		  color : '#FFFFFF',
 		  strokeColor : 'black',
@@ -164,7 +150,7 @@ game.newLoopFromConstructor('myGame', function () {
 		
 		brush.drawText({
 		  x : 680, y : 10,
-		  text : 'Деньги: ' + user.money,
+		  text : 'Деньги: ' + money,
 		  size : 30,
 		  color : '#FFFFFF',
 		  strokeColor : 'black',
@@ -188,7 +174,7 @@ game.newLoopFromConstructor('myGame', function () {
 			bonustimer.restart(1000);
 			brush.drawText({
 				x : 330, y : 10,
-				text : 'До бонуса 2:' + (bonustime/1000 - 60).toFixed(),
+				text : 'До бонуса 2:' + truncated((bonustime/1000 - 60)),
 				size : 30,
 				color : 'blue',
 				strokeColor : 'black',
@@ -200,7 +186,7 @@ game.newLoopFromConstructor('myGame', function () {
 			bonustimer.restart(1000);
 			brush.drawText({
 				x : 250, y : 10,
-				text : 'До бонуса ' + (bonustime/1000).toFixed() + " секунд(ы)",
+				text : 'До бонуса ' + truncated((bonustime/1000)) + " секунд(ы)",
 				size : 30,
 				color : 'blue',
 				strokeColor : 'black',
@@ -215,35 +201,10 @@ game.newLoopFromConstructor('myGame', function () {
 		//myCursor.draw();
 		
 	};
-	
-	this.exit = function () {
-		save();
-	}
+
 });
 
 game.newLoopFromConstructor('load', function () {
-	this.entry = function(){
-		VK.api("users.get", {'fields':'photo_50'}, function(data) {
-			user.name = '' + data.response[0].first_name;
-			user.id = '' + data.response[0].id;
-			user.avatar = '' + data.response[0].photo_50;
-			console.log(user);
-			user.loaded = true;
-		});
-		VK.api("storage.get", {user_id: user.id, key : 'money'}, function(data) {
-			user.money = data.response;
-			console.log(data.response);
-		});
-		VK.api("storage.get", {user_id: user.id, key : 'mas'}, function(data) {
-			mas = data.response;
-			console.log(data.response);
-		});
-		VK.api("storage.get", {user_id: user.id, key : 'bonustime'}, function(data) {
-			bonustime = data.response;
-			console.log(data.response);
-		});
-	}
-	
 	this.update = function () {
 		if(pjs.resources.isLoaded() == false){
 			brush.drawText({
