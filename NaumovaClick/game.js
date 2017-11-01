@@ -44,10 +44,10 @@ var saybool = false;
 var bonustime = 0;
 
 function save(){
-	VK.api("storage.set", {user_id: user.id, key : 'coin', value : parseInt(user.coin}), function(data) {
+	VK.api("storage.set", {user_id: user.id, key : 'coin', value : parseInt(user.coin)}, function(data) {
 		console.log('coin ' + user.coin);
 	});
-	VK.api("storage.set", {user_id: user.id, key : 'mas', value : parseInt(user.mas)}, function(data) {
+	VK.api("storage.set", {user_id: user.id, key : 'mas', value : parseFloat(user.mas)}, function(data) {
 		console.log('coin '  + user.mas);
 	});
 	VK.api("storage.set", {user_id: user.id, key : 'bonustime', value : parseInt(bonustime)}, function(data) {
