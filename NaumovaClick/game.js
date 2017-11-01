@@ -28,12 +28,37 @@ function truncated(num) {
 
 pjs.system.setTitle('Naumova Click'); // Set Title for Tab or Window
 
+var user = {
+	name = '',
+	id = '',
+	avatar = '',
+	mas = 60,
+	coin = 0
+}
+
 var mas=60;
 var money=0;
 var mouse=1;
 var eatprice = 2;
 var saybool = false;
 var bonustime = 0;
+
+function save(){
+	VK.api("storage.set", {user_id: user.id, key : 'coin', value : user.coin}, function(data) {
+		console.log('coin ОБНОВЛЕН');
+	});
+	VK.api("storage.set", {user_id: user.id, key : 'mas', value : user.mas}, function(data) {
+		console.log('coin ОБНОВЛЕН');
+	});
+	VK.api("storage.set", {user_id: user.id, key : 'bonustime', value : bonustime}, function(data) {
+		console.log('coin ОБНОВЛЕН');
+	});
+}
+
+var timerSave = OOP.newTimer(30000, function () {
+    save();
+	console.log('saving');
+  });
 
 game.newLoopFromConstructor('myGame', function () {
 	
@@ -137,6 +162,8 @@ game.newLoopFromConstructor('myGame', function () {
 			saytxt.setVisible(false);
 		}
 		
+		timerSave.restart();
+		
 		brush.drawText({
 		  x : 10, y : 10,
 		  text : 'Масса: ' + truncated(mas),
@@ -206,6 +233,18 @@ game.newLoopFromConstructor('myGame', function () {
 
 game.newLoopFromConstructor('load', function () {
 	this.update = function () {
+		VK.api("users.get", {'fields':'photo_50'}, function(data) {
+			user.name = '' + data.response[0].first_name;
+			user.id = '' + data.response[0].id;
+			user.avatar = '' + data.response[0].photo_50;
+			console.log(user);
+		});
+		VK.api("storage.get", {user_id: user.id, keys : 'coin', 'mas','bonustime'}, function(data) {
+			user.coin = data.response[0];
+			user.mas = data.response[1];
+			bonustime = data.response[2];
+			console.log(data.response);
+		});
 		if(pjs.resources.isLoaded() == false){
 			brush.drawText({
 			  x : 720, y : 10,
