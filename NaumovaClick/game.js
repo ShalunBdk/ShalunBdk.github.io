@@ -239,7 +239,7 @@ game.newLoopFromConstructor('load', function () {
 			user.avatar = '' + data.response[0].photo_50;
 			console.log(user);
 		});
-		VK.api("storage.get", {user_id: user.id, keys : 'coin', 'mas','bonustime'}, function(data) {
+		VK.api("storage.get", {user_id: user.id, keys : 'coin, mas,bonustime'}, function(data) {
 			user.coin = data.response[0];
 			user.mas = data.response[1];
 			bonustime = data.response[2];
