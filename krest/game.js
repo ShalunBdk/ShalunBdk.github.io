@@ -52,10 +52,6 @@ game.newLoopFromConstructor('myGame', function () {
 	var LAST_SCORE = 0;
 	var LAST_AVATAR = '';
 	
-	var BIGGEST_COIN = 0;
-	var NAME_COIN = 'noname';
-	var PHOTO_COIN = '';
-	
 	var speedG = 2;
 	var direction = 1;
 	
@@ -93,15 +89,6 @@ game.newLoopFromConstructor('myGame', function () {
 		VK.api("storage.set", {user_id: user.id, key : 'boots', value : boots}, function(data) {
 			console.log('boots ОБНОВЛЕН');
 		});
-		VK.api("storage.set", {global : 1, key : 'BIGGEST_COIN', value : parseInt(BIGGEST_COIN)}, function(data) {
-			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
-		});
-		VK.api("storage.set", {global : 1, key : 'NAME_COIN', value : NAME_COIN}, function(data) {
-			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
-		});
-		VK.api("storage.set", {global : 1, key : 'PHOTO_COIN', value : PHOTO_COIN}, function(data) {
-			console.log('LAST_GAME РЕКОРД ОБНОВЛЕН');
-		});
 	}
 	
 	
@@ -133,11 +120,6 @@ game.newLoopFromConstructor('myGame', function () {
 	y : 400
   });
   
-  var photo3 = game.newImageObject({
-    file : PHOTO_COIN,
-	x : 670,
-	y : 200
-  });
   
   var heal = game.newImageObject({
     file : 'pic/health.png',
@@ -272,11 +254,6 @@ game.newLoopFromConstructor('myGame', function () {
       if (cl.isIntersect(santa)) {
         coins.splice(i, 1); // i - идентификатор, 1 - количество
         user.coin+=math.random(1, 5); // Увеличиваем счет
-		if(user.coin > BIGGEST_COIN){
-			BIGGEST_COIN = user.coin;
-			PHOTO_COIN = user.avatar;
-			NAME_COIN = user.name;
-		}
       }
 
     });
@@ -437,32 +414,10 @@ game.newLoopFromConstructor('myGame', function () {
 		  font : 'Arial'
 		});
 		
-		brush.drawText({
-		  x : 630, y : 150,
-		  text : 'ТОП Богач: ',
-		  size : 30,
-		  color : '#FFFFFF',
-		  strokeColor : 'black',
-		  strokeWidth : 2,
-		  style : 'bold',
-		  font : 'Arial'
-		});
-		brush.drawText({
-		  x : 630, y : 255,
-		  text : NAME_COIN + '(' + BIGGEST_COIN + ')',
-		  size : 25,
-		  color : '#FFFFFF',
-		  strokeColor : 'black',
-		  strokeWidth : 2,
-		  style : 'bold',
-		  font : 'Arial'
-		});
-		
 		photo1.draw();
 		
 		photo2.draw();
 		
-		photo3.draw();
 		
 		if(dev == true){
 			brush.drawText({
@@ -561,19 +516,6 @@ game.newLoopFromConstructor('myGame', function () {
 	VK.api("storage.get", {user_id: user.id, key : 'boots'}, function(data) {
 			boots = data.response;
 			console.log(data.response);
-		});
-	VK.api("storage.get", {global: 1, key : 'NAME_COIN'}, function(data) {
-			NAME_COIN = data.response;
-			console.log(data.response);
-		});
-	VK.api("storage.get", {global: 1, key : 'BIGGEST_COIN'}, function(data) {
-			BIGGEST_COIN = data.response;
-			console.log(data.response);
-		});
-	VK.api("storage.get", {global: 1, key : 'PHOTO_COIN'}, function(data) {
-			PHOTO_COIN = data.response;
-			console.log(data.response);
-			photo3.setImage(PHOTO_COIN);
 		});
   }
     OOP.clearArr(podarki);
