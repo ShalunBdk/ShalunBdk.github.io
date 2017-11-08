@@ -32,7 +32,7 @@ var user = {
 		name : 'none',
 		avatar : '',
 		coin: 0,
-		loaded : true
+		loaded : false
 	};
 	
 	var naum_fall = 0;
