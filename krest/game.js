@@ -521,6 +521,7 @@ game.newLoopFromConstructor('myGame', function () {
     OOP.clearArr(podarki);
     score = 0;
 	if((pjs.resources.isLoaded() == true) && (user.loaded = true))GAME = 0;
+	user.loaded = false;
   };
 	this.exit = function () {
 		save();
