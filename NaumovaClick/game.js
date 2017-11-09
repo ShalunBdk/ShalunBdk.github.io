@@ -36,21 +36,19 @@ var user = {
 	coin : 0
 }
 
-var mas=60;
-var money=0;
 var mouse=1;
 var eatprice = 2;
 var saybool = false;
 var bonustime = 0;
 
 function save(){
-	VK.api("storage.set", {user_id: user.id, key : 'coin', value : parseInt(user.coin)}, function(data) {
+	VK.api("storage.set", {user_id: user.id, key : 'coin', value : 0+user.coin}, function(data) {
 		console.log('coin ' + user.coin);
 	});
-	VK.api("storage.set", {user_id: user.id, key : 'mas', value : parseFloat(user.mas)}, function(data) {
+	VK.api("storage.set", {user_id: user.id, key : 'mas', value : 0+user.mas}, function(data) {
 		console.log('coin '  + user.mas);
 	});
-	VK.api("storage.set", {user_id: user.id, key : 'bonustime', value : parseInt(bonustime)}, function(data) {
+	VK.api("storage.set", {user_id: user.id, key : 'bonustime', value : 0+bonustime}, function(data) {
 		console.log('coin ' +  bonustime);
 	});
 }
@@ -118,12 +116,12 @@ game.newLoopFromConstructor('myGame', function () {
 		
 		game.clear(); // clear screen
 		
-		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(naumova.getStaticBox()) && money >= eatprice){
-			mas += 0.1;
-			money -= eatprice;
+		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(naumova.getStaticBox()) && user.coin >= eatprice){
+			user.mas += 0.1;
+			user.coin -= eatprice;
 			naumova.drawFrame(1);
 			naumova.drawFrame(2);
-		} else if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(naumova.getStaticBox()) && money < eatprice){
+		} else if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(naumova.getStaticBox()) && user.coin < eatprice){
 			naumova.drawFrame(naumova.frame);
 			timer.restart(2000);
 			saytxt.setText("Мне нужно целых" + eatprice + " рублей");
@@ -132,17 +130,17 @@ game.newLoopFromConstructor('myGame', function () {
 			naumova.drawFrame(naumova.frame);
 		}
 		
-		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(fotoses.getStaticBox()) && mas > 40){
-			mas -= 10;
-			money += 100;
-		} else if(pjs.mouseControl.isPress("LEFT") && mas <= 40 && pjs.mouseControl.isInStatic(fotoses.getStaticBox())){
+		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(fotoses.getStaticBox()) && user.mas > 40){
+			user.mas -= 10;
+			user.coin += 100;
+		} else if(pjs.mouseControl.isPress("LEFT") && user.mas <= 40 && pjs.mouseControl.isInStatic(fotoses.getStaticBox())){
 			timer.restart(2000);
 			saytxt.setText("Я устала или голодная");
 			say();
 		}
 		
 		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(coin.getStaticBox()) && bonustime == 0){
-			money += 500;
+			user.coin += 500;
 			bonustime = 120000;
 			log("start");
 			bonustimer.start();
@@ -166,7 +164,7 @@ game.newLoopFromConstructor('myGame', function () {
 		
 		brush.drawText({
 		  x : 10, y : 10,
-		  text : 'Масса: ' + truncated(mas),
+		  text : 'Масса: ' + truncated(user.mas),
 		  size : 30,
 		  color : '#FFFFFF',
 		  strokeColor : 'black',
@@ -177,7 +175,7 @@ game.newLoopFromConstructor('myGame', function () {
 		
 		brush.drawText({
 		  x : 680, y : 10,
-		  text : 'Деньги: ' + money,
+		  text : 'Деньги: ' + user.coin,
 		  size : 30,
 		  color : '#FFFFFF',
 		  strokeColor : 'black',
@@ -240,9 +238,9 @@ game.newLoopFromConstructor('load', function () {
 			console.log(user);
 		});
 		VK.api("storage.get", {user_id: user.id, keys : 'coin, mas, bonustime'}, function(data) {
-			user.coin = data.response[0];
-			user.mas = data.response[1];
-			bonustime = data.response[2];
+			user.coin = parseInt(data.response[0]);
+			user.mas = parseFloat(data.response[1]);
+			bonustime = parseInt(data.response[2]);
 			console.log(data.response);
 		});
 		if(pjs.resources.isLoaded() == false){
