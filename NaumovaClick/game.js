@@ -238,9 +238,9 @@ game.newLoopFromConstructor('load', function () {
 			console.log(user);
 		});
 		VK.api("storage.get", {user_id: user.id, keys : 'coin, mas, bonustime'}, function(data) {
-			user.coin = parseInt(data.response[0]);
-			user.mas = parseFloat(data.response[1]);
-			bonustime = parseInt(data.response[2]);
+			user.coin = 0+data.response[0];
+			user.mas = 0+data.response[1];
+			bonustime = 0+data.response[2];
 			console.log(data.response);
 		});
 		if(pjs.resources.isLoaded() == false){
