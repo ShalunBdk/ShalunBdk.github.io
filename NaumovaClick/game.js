@@ -42,14 +42,17 @@ var saybool = false;
 var bonustime = 0;
 
 function save(){
-	VK.api("storage.set", {user_id: user.id, key : 'coin', value : 0+user.coin}, function(data) {
-		console.log('coin ' + user.coin);
+	var mas = 0+user.mas;
+	var coin = 0+user.coin;
+	var bt = 0+bonustime;
+	VK.api("storage.set", {user_id: user.id, key : 'coin', value : coin}, function(data) {
+		console.log('coin ' + coin);
 	});
-	VK.api("storage.set", {user_id: user.id, key : 'mas', value : 0+user.mas}, function(data) {
-		console.log('coin '  + user.mas);
+	VK.api("storage.set", {user_id: user.id, key : 'mas', value : mas}, function(data) {
+		console.log('coin '  + mas);
 	});
-	VK.api("storage.set", {user_id: user.id, key : 'bonustime', value : 0+bonustime}, function(data) {
-		console.log('coin ' +  bonustime);
+	VK.api("storage.set", {user_id: user.id, key : 'bonustime', value : bt}, function(data) {
+		console.log('coin ' +  bt);
 	});
 }
 
