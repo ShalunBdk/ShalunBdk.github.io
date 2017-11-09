@@ -42,14 +42,17 @@ var saybool = false;
 var bonustime = 0;
 
 function save(){
-	VK.api("storage.set", {user_id: user.id, key : 'coin', value : user.coin}, function(data) {
-		console.log('coin ' + user.coin);
+	var mas = 0+user.mas;
+	var coin = 0+user.coin;
+	var bt = 0+bonustime;
+	VK.api("storage.set", {user_id: user.id, key : 'coin', value : coin}, function(data) {
+		console.log('coin ' + coin);
 	});
-	VK.api("storage.set", {user_id: user.id, key : 'mas', value : user.mas}, function(data) {
-		console.log('coin '  + user.mas);
+	VK.api("storage.set", {user_id: user.id, key : 'mas', value : mas}, function(data) {
+		console.log('coin '  + mas);
 	});
-	VK.api("storage.set", {user_id: user.id, key : 'bonustime', value : bonustime}, function(data) {
-		console.log('coin ' +  bonustime);
+	VK.api("storage.set", {user_id: user.id, key : 'bonustime', value : bt}, function(data) {
+		console.log('coin ' +  bt);
 	});
 }
 
@@ -238,9 +241,9 @@ game.newLoopFromConstructor('load', function () {
 			console.log(user);
 		});
 		VK.api("storage.get", {user_id: user.id, keys : 'coin, mas, bonustime'}, function(data) {
-			user.coin = parseInt(data.response[0]);
-			user.mas = parseFloat(data.response[1]);
-			bonustime = parseInt(data.response[2]);
+			user.coin = 0+data.response[0];
+			user.mas = 0+data.response[1];
+			bonustime = 0+data.response[2];
 			console.log(data.response);
 		});
 		if(pjs.resources.isLoaded() == false){
