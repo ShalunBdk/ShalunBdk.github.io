@@ -249,7 +249,7 @@ game.newLoopFromConstructor('load', function () {
 		VK.api("storage.get", {user_id: user.id, keys : 'coin, mas, bonustime, newbie'}, function(data) {
 			if(parseInt(data.response[3].value)==0){
 				var coin = parseInt(data.response[0].value);
-				var mas = parseInt(data.response[1].value);
+				var mas = parseFloat(data.response[1].value);
 				var bt = parseInt(data.response[2].value);
 			}else{
 				var coin = 0;
