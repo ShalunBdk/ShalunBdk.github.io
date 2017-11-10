@@ -40,6 +40,7 @@ var mouse=1;
 var eatprice = 2;
 var saybool = false;
 var bonustime = 0;
+var newbie = 1;
 
 function save(){
 	var mas = 0+user.mas;
@@ -53,6 +54,10 @@ function save(){
 	});
 	VK.api("storage.set", {user_id: user.id, key : 'bonustime', value : bt}, function(data) {
 		console.log('coin ' +  bt);
+	});
+	if(newbie == 1)newbie = 0;
+	VK.api("storage.set", {user_id: user.id, key : 'newbie', value : newbie}, function(data) {
+		console.log('coin ' +  newbie);
 	});
 }
 
@@ -127,7 +132,7 @@ game.newLoopFromConstructor('myGame', function () {
 		} else if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(naumova.getStaticBox()) && user.coin < eatprice){
 			naumova.drawFrame(naumova.frame);
 			timer.restart(2000);
-			saytxt.setText("Мне нужно целых" + eatprice + " рублей");
+			saytxt.setText("Мне нужно целых " + eatprice + " рублей");
 			say();
 		} else {
 			naumova.drawFrame(naumova.frame);
@@ -241,10 +246,16 @@ game.newLoopFromConstructor('load', function () {
 			console.log("data" + data.response);
 			console.log(user);
 		});
-		VK.api("storage.get", {user_id: user.id, keys : 'coin, mas, bonustime'}, function(data) {
-			var coin = parseInt(data.response[0].value);
-			var mas = parseInt(data.response[1].value);
-			var bt = parseInt(data.response[2].value);
+		VK.api("storage.get", {user_id: user.id, keys : 'coin, mas, bonustime, newbie'}, function(data) {
+			if(parseInt(data.response[3].value)==0){
+				var coin = parseInt(data.response[0].value);
+				var mas = parseInt(data.response[1].value);
+				var bt = parseInt(data.response[2].value);
+			}else{
+				var coin = 0;
+				var mas = 60;
+				var bt = 0;
+			}
 			user.coin = 0+coin;
 			user.mas = 0+mas;
 			bonustime = 0+bt;
