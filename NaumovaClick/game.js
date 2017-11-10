@@ -241,9 +241,9 @@ game.newLoopFromConstructor('load', function () {
 			console.log(user);
 		});
 		VK.api("storage.get", {user_id: user.id, keys : 'coin, mas, bonustime'}, function(data) {
-			var coin = parseInt(data.response[0]);
-			var mas = parseInt(data.response[1]);
-			var bt = parseInt(data.response[2]);
+			var coin = parseInt(data.response[0].coin);
+			var mas = parseInt(data.response[0].mas);
+			var bt = parseInt(data.response[0].bonustime);
 			user.coin = 0+coin;
 			user.mas = 0+mas;
 			bonustime = 0+bt;
