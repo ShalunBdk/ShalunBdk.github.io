@@ -61,7 +61,7 @@ function save(){
 	});
 }
 
-var timerSave = OOP.newTimer(30000, function () {
+var timerSave = OOP.newTimer(10000, function () {
     save();
 	console.log('saving');
   });
@@ -140,7 +140,7 @@ game.newLoopFromConstructor('myGame', function () {
 		
 		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(fotoses.getStaticBox()) && user.mas > 40){
 			user.mas -= 10;
-			user.coin += 100;
+			user.coin += 200;
 		} else if(pjs.mouseControl.isPress("LEFT") && user.mas <= 40 && pjs.mouseControl.isInStatic(fotoses.getStaticBox())){
 			timer.restart(2000);
 			saytxt.setText("Я устала или голодная");
