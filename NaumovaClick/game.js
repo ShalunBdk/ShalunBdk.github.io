@@ -238,16 +238,18 @@ game.newLoopFromConstructor('load', function () {
 			user.name = '' + data.response[0].first_name;
 			user.id = '' + data.response[0].id;
 			user.avatar = '' + data.response[0].photo_50;
+			console.log("data" + data.response);
 			console.log(user);
 		});
 		VK.api("storage.get", {user_id: user.id, keys : 'coin, mas, bonustime'}, function(data) {
-			var coin = parseInt(data.response[0].coin);
-			var mas = parseInt(data.response[0].mas);
-			var bt = parseInt(data.response[0].bonustime);
+			var coin = parseInt(data.response[0].value);
+			var mas = parseInt(data.response[1].value);
+			var bt = parseInt(data.response[2].value);
 			user.coin = 0+coin;
 			user.mas = 0+mas;
 			bonustime = 0+bt;
-			console.log(data.response);
+			console.log("data:" + data.response);
+			console.log(coin + " " + mas + " " + bt);
 		});
 		if(pjs.resources.isLoaded() == false){
 			brush.drawText({
