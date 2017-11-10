@@ -41,6 +41,7 @@ var eatprice = 2;
 var saybool = false;
 var bonustime = 0;
 var newbie = 1;
+var size = 1;
 
 function save(){
 	var mas = 0+user.mas;
@@ -70,8 +71,8 @@ game.newLoopFromConstructor('myGame', function () {
 	
 	var naumova = game.newAnimationObject({
 	  animation : pjs.tiles.newAnimation('pic/naumova_click.png', 256, 256, 3),
-	  h: 300,
-	  w : 300,
+	  h: 300*size,
+	  w : 300*size,
 	  delay : 1,
 	  y : 100, x : 250
 	});
@@ -123,6 +124,8 @@ game.newLoopFromConstructor('myGame', function () {
 	this.update = function () {
 		
 		game.clear(); // clear screen
+		
+		if(user.mas>99)size = user.mas/100;
 		
 		if(pjs.mouseControl.isPress("LEFT") && pjs.mouseControl.isInStatic(naumova.getStaticBox()) && user.coin >= eatprice){
 			user.mas += 0.1;
