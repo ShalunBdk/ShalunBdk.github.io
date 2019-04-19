@@ -476,6 +476,7 @@ game.newLoopFromConstructor('myGame', function () {
 			user.name = '' + data.response[0].first_name;
 			user.id = '' + data.response[0].id;
 			user.avatar = '' + data.response[0].photo_50;
+			console.log(data.response[0]);
 			console.log(user);
 			user.loaded = true;
 		});
@@ -510,7 +511,7 @@ game.newLoopFromConstructor('myGame', function () {
 			photo2.setImage(LAST_AVATAR);
 		});
 	VK.api("storage.get", {user_id: user.id, key : 'coin'}, function(data) {
-			user.coin =+ data.response;
+			user.coin += data.response;
 			console.log(data.response);
 		});
 	VK.api("storage.get", {user_id: user.id, key : 'boots'}, function(data) {
