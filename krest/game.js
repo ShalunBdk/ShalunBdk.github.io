@@ -84,7 +84,7 @@ game.newLoopFromConstructor('myGame', function () {
 			console.log('LAST_AVATAR РЕКОРД ОБНОВЛЕН');
 		});
 		VK.api("storage.set", {user_id: user.id, key : 'coin', value : parseInt(user.coin)}, function(data) {
-			console.log('coin ОБНОВЛЕН');
+			console.log(user.coin + 'coin ОБНОВЛЕН');
 		});
 		VK.api("storage.set", {user_id: user.id, key : 'boots', value : boots}, function(data) {
 			console.log('boots ОБНОВЛЕН');
@@ -576,11 +576,11 @@ game.newLoopFromConstructor('shop', function () {
 		});
 		
 		if (mouse.isPeekObject('LEFT', buy_boot)) {
-			if(!boots && user.coin > 199){ boots = true;user.coin -= 200;speed += 0.1; }
+			if(!boots && user.coin > 20){ boots = true;user.coin -= 20;speed += 0.1; }
 		}
 		
 		if (mouse.isPeekObject('LEFT', buy_fitness)) {
-			if(boots && user.coin > 99){ user.coin -= 100;speed += 0.05; }
+			if(boots && user.coin > 30){ user.coin -= 30;speed += 0.05; }
 		}
 		
 		if (key.isDown('ESC')) {
