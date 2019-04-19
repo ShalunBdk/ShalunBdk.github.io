@@ -474,7 +474,7 @@ game.newLoopFromConstructor('myGame', function () {
   if(user.loaded == false){
 	VK.api("users.get", {'fields':'photo_50'}, function(data) {
 			user.name = '' + data.response[0].first_name;
-			user.id = '' + data.response[0].id;
+			user.id = '' + data.response[0].uid;
 			user.avatar = '' + data.response[0].photo_50;
 			console.log(data.response);
 			console.log(user);
