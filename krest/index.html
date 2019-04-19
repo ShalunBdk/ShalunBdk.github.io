@@ -17,28 +17,29 @@
 }, '5.63');
 	</script>
 	       <script src="//vk.com/js/api/xd_connection.js?2"></script>
-<script src="https://ad.mail.ru/static/admanhtml/rbadman-html5.min.js"></script>
-<script src="https://vk.com/js/api/adman_init.js"></script>
-<script src="https://js.appscentrum.com/scr/preroll.js"></script>
+        <div id="vk_ads_115667"></div>
 <script type="text/javascript">
-window.addEventListener('load', function() {
-
-var user_id = user.id;
-var app_id = 5891428;
-
-admanInit({
-  user_id: user_id,
-  app_id: app_id,
-  type: 'preloader'
-}, onAdsReady, onNoAds);
-
-function onAdsReady(adman) {
-  adman.onStarted(function () { admanStat(app_id, user_id); });
-  adman.start('preroll');
-};
-
-function onNoAds() {};
-});
+  setTimeout(function() {
+    var adsParams = {"ad_unit_id":115667,"ad_unit_hash":"6b4b01cf5a4a294891317a1809bba1f5"};
+    function vkAdsInit() {
+      VK.Widgets.Ads('vk_ads_115667', {}, adsParams);
+    }
+    if (window.VK && VK.Widgets) {
+      vkAdsInit();
+    } else {
+      if (!window.vkAsyncInitCallbacks) window.vkAsyncInitCallbacks = [];
+      vkAsyncInitCallbacks.push(vkAdsInit);
+      var protocol = ((location.protocol === 'https:') ? 'https:' : 'http:');
+      var adsElem = document.getElementById('vk_ads_115667');
+      var scriptElem = document.createElement('script');
+      scriptElem.type = 'text/javascript';
+      scriptElem.async = true;
+      scriptElem.src = protocol + '//vk.com/js/api/openapi.js?160';
+      adsElem.parentNode.insertBefore(scriptElem, adsElem.nextSibling);
+    }
+  }, 0);
+</script>
+    
     
 
 </script>
